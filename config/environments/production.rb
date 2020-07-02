@@ -61,7 +61,20 @@ Rails.application.configure do
   # config.active_job.queue_name_prefix = "photo_app_production"
 
   config.action_mailer.perform_caching = false
-  config.action_mailer.delivery_method = :aws_sdk
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+    :user_name => Rails.application.credentials.sendgrid[:username],
+    :api_key => Rails.application.credentials.sendgrid[:api_key],
+    :domain => 'heroku.com',
+    :address => 'smtp.sendgrid.net',
+    :port => 465,
+    :authentication => :plain,
+    :enable_starttls_auto => true
+  }
+  config.action_mailer.default_url_options = {
+    :host => 'karry-photo-app.herokuapp.com',
+    :protocol => 'https'
+  }
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
